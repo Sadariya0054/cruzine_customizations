@@ -19,5 +19,5 @@ def on_submit(doc, method):
             minimum_criteria = flt(rounded_total) * flt(final_percentage) / 100
             if minimum_criteria > flt(advance_paid):
                 balance = flt(minimum_criteria) - flt(advance_paid)
-                frappe.throw("Row: {0} {1} is against Sales Order {2} Payment is Pending {3}. Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
+                frappe.throw("Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
                     row.idx, row.item_name, row.against_sales_order, balance))
