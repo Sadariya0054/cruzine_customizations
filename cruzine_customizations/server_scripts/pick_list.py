@@ -41,6 +41,9 @@ def get_query_method(doctype, txt, searchfield, start, page_len, filters):
 				advance_paid = frappe.db.get_value("Sales Order", so.name, "advance_paid")
 				minimum_criteria = flt(rounded_total) * flt(percentage) / 100
 				if minimum_criteria > flt(advance_paid):
+					if so.name == "SAL-ORD-2024-00043":
+						message = " {0} {1} {2}".format(minimum_criteria,advance_paid, percentage )
+						frappe.log_error(title="Debigging", message = message)
 					is_valid = False
 		if is_valid:
 			final_so.append(so)
