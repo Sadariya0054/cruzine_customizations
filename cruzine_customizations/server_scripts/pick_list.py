@@ -7,6 +7,9 @@ def get_query_method(doctype, txt, searchfield, start, page_len, filters):
 	conditions = ""
 	if txt:
 		conditions += "and so.name like '%%" + txt + "%%' "
+	
+	if filters.get("customer"):
+		conditions += " so.customer = '{0}' ".format(filters.get("customer"))
 
 	if filters.get("transaction_date"):
 		date = filters.get("transaction_date")[1]
@@ -19,14 +22,13 @@ def get_query_method(doctype, txt, searchfield, start, page_len, filters):
 			and so.per_delivered < 100
 			and so.docstatus = 1
 			and so.status != ''
-			and so.customer = %s
 			and so.company = %s
 			{}
 		order by so.name ASC
-		 """.format(
-			conditions
+		""".format(
+			conditions,
 		),
-		(filters.get("customer"),filters.get("company")),
+		(filters.get("company")),
 		as_dict=1,
 	)
 	final_so = []
@@ -42,7 +44,7 @@ def get_query_method(doctype, txt, searchfield, start, page_len, filters):
 				minimum_criteria = flt(rounded_total) * flt(percentage) / 100
 				if minimum_criteria > flt(advance_paid):
 					if so.name == "SAL-ORD-2024-00043":
-						message = " {0} {1} {2}".format(minimum_criteria,advance_paid, percentage )
+						message = " {0} {1} ".format(minimum_criteria,advance_paid, percentage )
 						frappe.log_error(title="Debigging", message = message)
 					is_valid = False
 		if is_valid:
