@@ -23,8 +23,8 @@ def get_query_method(doctype, txt, searchfield, start, page_len, filters):
 			and so.company = %s
 			{}
 		order by so.name ASC
-		limit {} offset {} """.format(
-			conditions, cint(page_len), cint(start)
+		 """.format(
+			conditions
 		),
 		(filters.get("customer"),filters.get("company")),
 		as_dict=1,
