@@ -18,5 +18,6 @@ def on_submit(doc, method):
             advance_paid = frappe.db.get_value("Sales Order", row.against_sales_order, "advance_paid")
             minimum_criteria = flt(rounded_total) * flt(final_percentage) / 100
             if minimum_criteria > flt(advance_paid):
-                frappe.throw("Row:{0} has item against Sales Order {1} which dont have enough {2} advance payment ".format(
-                    row.idx, row.against_sales_order, minimum_criteria))
+                balance = flt(minimum_criteria) - flt(advance_paid)
+                frappe.throw("Row: {0} {1} is against Sales Order {2} Payment is Pending {3}. Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
+                    row.idx, row.item_name, row.against_sales_order, balance))
