@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import flt
+from frappe.desk.doctype.notification_log.notification_log import enqueue_create_notification
 
 def on_submit(doc, method):
     for row in doc.items:
@@ -19,5 +20,19 @@ def on_submit(doc, method):
             minimum_criteria = flt(rounded_total) * flt(final_percentage) / 100
             if minimum_criteria > flt(advance_paid):
                 balance = flt(minimum_criteria) - flt(advance_paid)
+                owner = frappe.db.get_value("Sales Order", row.against_sales_order, "owner")
+                message = "Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Please followup customer.".format(
+                    row.idx, row.item_name, row.against_sales_order, balance)
+                frappe.db.rollback()
+                notification_doc = {
+                    "type": "Alert",
+                    "document_type": doc.doctype,
+                    "document_name": doc.name,
+                    "subject": message,
+                    "from_user": doc.modified_by or doc.owner,
+                    "email_content": message,
+                }
+                enqueue_create_notification(owner, notification_doc)
+                frappe.db.commit()
                 frappe.throw("Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
                     row.idx, row.item_name, row.against_sales_order, balance))
