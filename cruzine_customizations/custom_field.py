@@ -37,9 +37,15 @@ def setup_custom_fields():
          "Shipping Rule": [
             dict(fieldname='city_master_table',
                 label='City Master Table',
-                fieldtype='Table',
+                fieldtype='Table MultiSelect',
                 options='City Master Table',
                 insert_after='countries'
+            ),
+            dict(fieldname='incoterm_master_table',
+                label='Incoterm Master Table',
+                fieldtype='Table MultiSelect',
+                options='Incoterm Master Table',
+                insert_after='city_master_table'
             ),
         ]
 
