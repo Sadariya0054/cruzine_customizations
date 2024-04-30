@@ -1,0 +1,32 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-04-30 10:08:28.287670",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "city_master"
+ ],
+ "fields": [
+  {
+   "fieldname": "city_master",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "City Master",
+   "options": "City Master"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-04-30 10:08:36.930557",
+ "modified_by": "Administrator",
+ "module": "Cruzine Customizations",
+ "name": "City Master Table",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

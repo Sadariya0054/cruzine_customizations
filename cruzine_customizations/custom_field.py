@@ -12,6 +12,37 @@ def setup_custom_fields():
                 insert_after='due_date_based_on'
             ),
         ],
+        "Sales Order": [
+            dict(fieldname='customer_city',
+                label='Customer City',
+                fieldtype='Data',
+                fetch_from = 'customer_address.customer_city',
+                insert_after='address_display'
+            ),
+            dict(fieldname='customer_shipping_city',
+                label='Customer Shipping City',
+                fieldtype='Data',
+                fetch_from = 'shipping_address_name.customer_city',
+                insert_after='shipping_address'
+            ),
+        ],
+         "Address": [
+            dict(fieldname='customer_city',
+                label='Customer City',
+                fieldtype='Link',
+                options='City Master',
+                insert_after='city'
+            ),
+        ],
+         "Shipping Rule": [
+            dict(fieldname='city_master_table',
+                label='City Master Table',
+                fieldtype='Table',
+                options='City Master Table',
+                insert_after='countries'
+            ),
+        ]
+
     }
     try:
         create_custom_fields(custom_fields)
