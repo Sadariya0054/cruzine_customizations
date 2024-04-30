@@ -2,7 +2,7 @@ import frappe
 
 @frappe.whitelist()
 def get_shipping_rules(doctype, txt, searchfield, start, page_len, filters):
-	qe = ' and cmt.city_master="'+filters.get('city')+ '"  and imt.incoterm="'+filters.get('incoterm')+'"'
+	qe = ' and cmt.city_master="'+filters.get('city','')+ '"  and imt.incoterm="'+filters.get('incoterm','')+'"'
 	address = frappe.db.sql(""" 
         select 
             sr.name 

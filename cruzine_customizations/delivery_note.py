@@ -33,6 +33,13 @@ def on_submit(doc, method):
                     "email_content": message,
                 }
                 enqueue_create_notification(owner, notification_doc)
+                frappe.sendmail(
+                    recipients=frappe.db.get_value("User", doc.owner, "email") or doc.owner,
+                    subject=subject,
+                    message=message,
+                    reference_doctype=doc.doctype,
+                    reference_name=doc.name,
+                )
                 frappe.db.commit()
                 frappe.throw("Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
                     row.idx, row.item_name, row.against_sales_order, balance))
