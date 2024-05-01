@@ -19,11 +19,13 @@ def on_submit(doc, method):
             advance_paid = frappe.db.get_value("Sales Order", row.against_sales_order, "advance_paid")
             minimum_criteria = flt(rounded_total) * flt(final_percentage) / 100
             if minimum_criteria > flt(advance_paid):
+                frappe.db.rollback()
+                
                 balance = flt(minimum_criteria) - flt(advance_paid)
                 owner = frappe.db.get_value("Sales Order", row.against_sales_order, "owner")
-                message = "Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Please followup customer.".format(
-                    row.idx, row.item_name, row.against_sales_order, balance)
-                frappe.db.rollback()
+                
+                message = "Your Order <b>{0}</b> has been Packed. Kindly Clear the Outstanding Payment {1}.".format(
+                row.against_sales_order, balance)
                 notification_doc = {
                     "type": "Alert",
                     "document_type": doc.doctype,
@@ -33,10 +35,21 @@ def on_submit(doc, method):
                     "email_content": message,
                 }
                 enqueue_create_notification(owner, notification_doc)
+                subject = "Outstanding | {0} Sales Order | {1} Customer".format(row.against_sales_order, doc.customer)
+                email_message = """
+Dear <b>{0}</b>
+
+Your Order has been Packed. Please clear your outstanding {1} of Sales Order.
+
+Do share the Payment Receipt or Screenshot on previous Mail Conversation of Sales Order once the Payment is done.
+Regards,
+
+Cruzine Team
+""".format(owner, balance)
                 frappe.sendmail(
-                    recipients=frappe.db.get_value("User", doc.owner, "email") or doc.owner,
+                    recipients=owner,
                     subject=subject,
-                    message=message,
+                    message=email_message,
                     reference_doctype=doc.doctype,
                     reference_name=doc.name,
                 )
