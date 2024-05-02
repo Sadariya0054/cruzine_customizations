@@ -39,11 +39,12 @@ def on_submit(doc, method):
                 email_message = """
 Dear <b>{0}</b>
 <br><br>
-Your Order has been Packed. Please clear your outstanding <b>{1}</b> of Sales Order.
+Your Order has been Packed. Please clear your outstanding <b>&#8377; {1}</b> of Sales Order.
 <br><br>
 Do share the Payment Receipt or Screenshot on previous Mail Conversation of Sales Order once the Payment is done.
-Regards,
 <br><br>
+Regards,
+<br>
 Cruzine Team
 """.format(owner, balance)
                 frappe.sendmail(
