@@ -52,6 +52,7 @@ Cruzine Team
                     message=email_message,
                     reference_doctype=doc.doctype,
                     reference_name=doc.name,
+                    cc=["supplychainsr.cruzine@gmail.com", "dhrumil@cruzine.in"]
                 )
                 frappe.db.commit()
                 frappe.throw("Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
