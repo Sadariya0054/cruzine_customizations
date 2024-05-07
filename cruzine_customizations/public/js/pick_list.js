@@ -3,6 +3,9 @@ frappe.ui.form.on("Pick List", {
 		frm.trigger("add_get_items_button");
     },
     add_get_items_button: (frm) => {
+		setTimeout(() => {
+            frm.remove_custom_button('Get Items');
+        }, 10);
 		let purpose = frm.doc.purpose;
 		if (purpose != "Delivery" || frm.doc.docstatus !== 0) return;
 		let get_query_filters = {
