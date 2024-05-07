@@ -26,7 +26,16 @@ def setup_custom_fields():
                 insert_after='shipping_address'
             ),
         ],
-         "Address": [
+        "Customer": [
+            dict(fieldname='customer_city',
+                label='Customer City',
+                fieldtype='Link',
+                options='City Master',
+                insert_after='customer_type',
+                allow_in_quick_entry=True
+            ),
+        ],
+        "Address": [
             dict(fieldname='customer_city',
                 label='Customer City',
                 fieldtype='Link',

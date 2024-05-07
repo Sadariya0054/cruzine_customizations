@@ -122,7 +122,10 @@ doctype_js = {
 doc_events = {
 	"Delivery Note": {
 		"on_submit": "cruzine_customizations.delivery_note.on_submit",
-	}
+	},
+    "Address": {
+        "before_insert": "cruzine_customizations.address.before_insert"
+    }
 }
 
 # Scheduled Tasks
