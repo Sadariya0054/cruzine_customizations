@@ -17,13 +17,15 @@ def setup_custom_fields():
                 label='Customer City',
                 fieldtype='Data',
                 fetch_from = 'customer_address.customer_city',
-                insert_after='address_display'
+                insert_after='address_display',
+                allow_on_submit=True
             ),
             dict(fieldname='customer_shipping_city',
                 label='Customer Shipping City',
                 fieldtype='Data',
                 fetch_from = 'shipping_address_name.customer_city',
-                insert_after='shipping_address'
+                insert_after='shipping_address',
+                allow_on_submit=True
             ),
         ],
         "Customer": [
