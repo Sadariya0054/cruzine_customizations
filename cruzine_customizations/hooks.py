@@ -125,6 +125,9 @@ doc_events = {
 	},
     "Address": {
         "before_insert": "cruzine_customizations.address.before_insert"
+    },
+    "Customer": {
+        "validate": "cruzine_customizations.customer.validate"
     }
 }
 
