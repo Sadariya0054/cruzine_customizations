@@ -20,6 +20,10 @@ def on_submit(doc, method):
                 custom_other_charges = frappe.db.get_value("Shipment", shipment,"custom_other_charges")
                 if custom_other_charges:
                     charges += frappe.utils.flt(custom_other_charges)
+                
+                shipment_amount = frappe.db.get_value("Shipment", shipment,"shipment_amount")
+                if shipment_amount:
+                    charges += frappe.utils.flt(shipment_amount)
         frappe.db.set_value("Sales Order", so, "custom_shipping_charges", charges)
         so_doc = frappe.get_doc("Sales Order", so)
         gros_profit = 0
