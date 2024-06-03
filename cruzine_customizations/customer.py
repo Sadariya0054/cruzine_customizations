@@ -6,7 +6,7 @@ def capitalize(sentence):
 
 def validate(doc, method):
     doc.customer_name = capitalize(doc.customer_name)
-    if doc.custom_verification != doc.get_doc_before_save().custom_verification:
+    if doc.get_doc_before_save() and doc.custom_verification != doc.get_doc_before_save().custom_verification:
         sos = frappe.get_all("Sales Order",{"customer": doc.name})
         for so in sos:
             frappe.db.set_value("Sales Order", so['name'], 
