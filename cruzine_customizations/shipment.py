@@ -4,14 +4,14 @@ def on_submit(doc, method):
     dn = doc.shipment_delivery_note[0].delivery_note
     so = frappe.db.get_value("Delivery Note Item", {"parent": dn}, "against_sales_order")
     if so:
-        dnis = frappe.get_all("Delivery Note Item",{"against_sales_order": so}, "parent")
+        dnis = frappe.get_all("Delivery Note Item",{"against_sales_order": so, "docstatus":1}, "parent")
         delivery_notes = []
         for row in dnis:
             if row['parent'] not in delivery_notes:
                 delivery_notes.append(row['parent'])
         charges = 0
         for dn in delivery_notes:
-            shipmentsdn = frappe.get_all("Shipment Delivery Note",{"delivery_note":dn}, "parent")
+            shipmentsdn = frappe.get_all("Shipment Delivery Note",{"delivery_note":dn, "docstatus":1}, "parent")
             shipments = []
             for row in shipmentsdn:
                 if row['parent'] not in shipments:
