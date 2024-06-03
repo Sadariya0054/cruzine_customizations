@@ -132,6 +132,9 @@ doc_events = {
     },
     "Sales Order": {
         "validate": "cruzine_customizations.sales_order.validate"
+    },
+    "Shipment": {
+        "on_submit": "cruzine_customizations.shipment.on_submit"
     }
 }
 
