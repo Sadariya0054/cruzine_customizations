@@ -24,14 +24,19 @@ def on_submit(doc, method):
                 shipment_amount = frappe.db.get_value("Shipment", shipment,"shipment_amount")
                 if shipment_amount:
                     charges += frappe.utils.flt(shipment_amount)
-        frappe.db.set_value("Sales Order", so, "custom_shipping_charges", charges)
+        
         so_doc = frappe.get_doc("Sales Order", so)
         gros_profit = 0
         for row in so_doc.items:
             gros_profit += row.gross_profit
+        
+        for row in so_doc.sales_team:
+            gros_profit -= row.incentives
         gros_profit -= charges
+        gros_profit -= so_doc.total_commission
         profit_per = gros_profit * 100 / so_doc.total
-
+        
+        frappe.db.set_value("Sales Order", so, "custom_shipping_charges", charges)
         custom_net_profit = str(gros_profit) + " (" + str(profit_per) +" %)"
         frappe.db.set_value("Sales Order", so, "custom_net_profit", custom_net_profit)
         
