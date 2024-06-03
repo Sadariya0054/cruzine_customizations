@@ -17,8 +17,10 @@ def get_query_method(doctype, txt, searchfield, start, page_len, filters):
 
 	sales_order = frappe.db.sql(
 		"""select distinct so.name, so.company,so.customer
-		from `tabSales Order` so, `tabSales Order Item` so_item
-		where so.name = so_item.parent
+		from `tabSales Order` so, `tabSales Order Item` so_item, `tabCustomer` customer
+		where so.name = so_item.parent and so.customer = customer.name
+			and customer.custom_verification in ('Verified','On Approval')
+			and so.custom_verification in ('Verified','On Approval')
 			and so.per_delivered < 100
 			and so.docstatus = 1
 			and so.status != ''

@@ -1,5 +1,8 @@
 import frappe
 
+
+def validate(doc, method):
+	doc.custom_customer_verification_status = frappe.db.get_value("Customer", doc.customer, "custom_verification")
 @frappe.whitelist()
 def get_shipping_rules(doctype, txt, searchfield, start, page_len, filters):
 	qe = ' and cmt.city_master="'+filters.get('city','')+ '"  and imt.incoterm="'+filters.get('incoterm','')+'"'

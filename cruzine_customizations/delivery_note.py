@@ -58,3 +58,9 @@ Cruzine Team
                 frappe.db.commit()
                 frappe.throw("Row: {0} <b>{1}</b> is against Sales Order <b>{2}</b> Payment is Pending <b>{3}</b> . Kindly send E-Mail to Sales Team for Clear Outstanding.".format(
                     row.idx, row.item_name, row.against_sales_order, balance))
+
+
+def before_insert(doc, method): 
+    customer = frappe.get_doc("Customer", doc.customer)
+    for row in customer.custom_performance_indicator:
+        doc.append("custom_performance_indicator",{"performance_indicator": row.performance_indicator})

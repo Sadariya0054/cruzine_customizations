@@ -122,12 +122,16 @@ doctype_js = {
 doc_events = {
 	"Delivery Note": {
 		"on_submit": "cruzine_customizations.delivery_note.on_submit",
+		"before_insert": "cruzine_customizations.delivery_note.before_insert",
 	},
     "Address": {
         "before_insert": "cruzine_customizations.address.before_insert"
     },
     "Customer": {
         "validate": "cruzine_customizations.customer.validate"
+    },
+    "Sales Order": {
+        "validate": "cruzine_customizations.sales_order.validate"
     }
 }
 
@@ -220,7 +224,3 @@ doc_events = {
 # auth_hooks = [
 # 	"cruzine_customizations.auth.validate"
 # ]
-
-after_migrate = [
-    "cruzine_customizations.custom_field.setup_custom_fields",
-]
