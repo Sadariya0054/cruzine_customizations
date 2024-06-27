@@ -1,6 +1,47 @@
 import frappe
-from frappe.utils import flt
+from frappe.utils import flt,cint
 from frappe.desk.doctype.notification_log.notification_log import enqueue_create_notification
+import json
+
+
+@frappe.whitelist()
+def bulk_packing_slip(number_of_packing_slip,package_incriment, packing_item_table, doc):
+    item_qty = {}
+    packing_item_table = json.loads(packing_item_table)
+    for row in packing_item_table:
+        item_qty[row["item"]] = row["qty"]
+    doc = frappe.get_doc("Delivery Note", doc)
+    for i in range(cint(number_of_packing_slip)):
+        packing_slip = frappe.get_doc({"doctype":"Packing Slip"})
+        packing_slip.delivery_note = doc.name
+        for row_item in doc.items:
+            packing_slip.append("items",{
+                "item_code": row_item.item_code,
+                "item_name": row_item.item_name,
+                "batch_no": row_item.batch_no,
+                "description": row_item.description,
+                "qty": item_qty.get(row_item.item_code, 0),
+                "stock_uom": row_item.stock_uom,
+                "dn_detail": row_item.name,
+            })
+        packing_slip.from_case_no = get_recommended_case_no(doc.name)
+        packing_slip.to_case_no = packing_slip.from_case_no + flt(package_incriment)
+        packing_slip.run_method("set_missing_values")
+        
+        packing_slip.save()
+        packing_slip.submit()
+
+def get_recommended_case_no(delivery_note):
+    """Returns the next case no. for a new packing slip for a delivery note"""
+
+    return (
+        cint(
+            frappe.db.get_value(
+                "Packing Slip", {"delivery_note": delivery_note}, ["max(to_case_no)"]
+            )
+        )
+        + 1
+    )
 
 def on_submit(doc, method):
     for row in doc.items:
